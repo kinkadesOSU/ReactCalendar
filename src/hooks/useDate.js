@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-export const useDate = (events, nav) => {
+export const useDate = (allEvents, nav) => {
   const [dateDisplay, setDateDisplay] = useState('');
   const [days, setDays] = useState([]);
 
   // Finds the event for a date
-  const eventForDate = date => events.find(e => e.date === date);
+  const eventForDate = date => allEvents.filter(e => e.date === date);
 
   // Tracks changes to events or nav and does the code inside
   useEffect(() => {
@@ -50,14 +50,14 @@ export const useDate = (events, nav) => {
       if (i > paddingDays) {
         daysArr.push({
           value: i - paddingDays,
-          event: eventForDate(dayString),
+          events: eventForDate(dayString),
           isCurrentDay: i - paddingDays === day && nav === 0,
           date: dayString,
         });
       } else {
         daysArr.push({
           value: 'padding',
-          event: null,
+          events: null,
           isCurrentDay: false,
           date: '',
         });
@@ -66,7 +66,7 @@ export const useDate = (events, nav) => {
 
     // updates the days property in state
     setDays(daysArr);
-  }, [events, nav]);
+  }, [allEvents, nav]);
 
   return {
     days,

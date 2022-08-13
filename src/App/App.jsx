@@ -8,19 +8,19 @@ import { useDate } from '../hooks/useDate';
 export const App = () => {
   const [nav, setNav] = useState(0);
   const [clicked, setClicked] = useState();
-  const [events, setEvents] = useState(
-    localStorage.getItem('events') ? 
-      JSON.parse(localStorage.getItem('events')) : 
+  const [allEvents, setEvents] = useState(
+    localStorage.getItem('allEvents') ? 
+      JSON.parse(localStorage.getItem('allEvents')) : 
       []
   );
 
-  const eventForDate = date => events.find(e => e.date === date);
+  const eventForDate = date => allEvents.filter(e => e.date === date);
 
   useEffect(() => {
-    localStorage.setItem('events', JSON.stringify(events));
-  }, [events]);
+    localStorage.setItem('allEvents', JSON.stringify(allEvents));
+  }, [allEvents]);
 
-  const { days, dateDisplay } = useDate(events, nav);
+  const { days, dateDisplay } = useDate(allEvents, nav);
 
   return(
     <>
@@ -46,38 +46,38 @@ export const App = () => {
             <Day
               key={index}
               day={d}
-            //   onClick={() => {
-            //     if (d.value !== 'padding') {
-            //       setClicked(d.date);
-            //     }
-            //   }}
+              onClick={() => {
+                if (d.value !== 'padding') {
+                  setClicked(d.date);
+                }
+              }}
             />
           ))}
         </div>
       </div>
 
       {
-        clicked && !eventForDate(clicked) &&
+        clicked &&
         <NewEventModal
           onClose={() => setClicked(null)}
           onSave={title => {
-            setEvents([ ...events, { title, date: clicked, time: "8AM"}]);
+            setEvents([ ...allEvents, { title, date: clicked, time: "8AM"}]);
             setClicked(null);
           }}
         />
       }
 
-      {
+      {/* {
         clicked && eventForDate(clicked) &&
         <DeleteEventModal 
           eventText={eventForDate(clicked).title}
           onClose={() => setClicked(null)}
           onDelete={() => {
-            setEvents(events.filter(e => e.date !== clicked));
+            setEvents(allEvents.filter(e => e.date !== clicked));
             setClicked(null);
           }}
         />
-      }
+      } */}
     </>
   );
 };
