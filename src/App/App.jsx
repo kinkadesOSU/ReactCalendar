@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CalendarHeader } from '../CalendarHeader';
 import { Day } from '../Day';
 import { NewEventModal } from '../NewEventModal';
@@ -46,11 +46,11 @@ export const App = () => {
             <Day
               key={index}
               day={d}
-              onClick={() => {
-                if (d.value !== 'padding') {
-                  setClicked(d.date);
-                }
-              }}
+            //   onClick={() => {
+            //     if (d.value !== 'padding') {
+            //       setClicked(d.date);
+            //     }
+            //   }}
             />
           ))}
         </div>
@@ -61,7 +61,7 @@ export const App = () => {
         <NewEventModal
           onClose={() => setClicked(null)}
           onSave={title => {
-            setEvents([ ...events, { title, date: clicked }]);
+            setEvents([ ...events, { title, date: clicked, time: "8AM"}]);
             setClicked(null);
           }}
         />
